@@ -3,4 +3,4 @@ project(RISC__)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(RISC__ main.cpp RiscEmulatorLibrary.h execute.cpp file_parser.cpp errors.cpp debug.cpp run.cpp write_to_memory.cpp instruction.h)
+add_executable(RISC__ main.cpp RiscEmulatorLibrary.h execute.cpp file_parser.cpp errors.cpp debug.cpp run.cpp write_to_memory.cpp)
