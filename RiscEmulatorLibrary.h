@@ -34,6 +34,7 @@ public:
 
 //program_debugging
     void debug_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory);
+
     //Еrror processing functions
     void error_processing(int code);
 };
