@@ -6,23 +6,28 @@
 #include<fstream>
 #include<vector>
 #include<string>
+#include<regex>
 using  namespace std;
 //instruction structure
 class RISC {
 public:
-    struct instruction;
+    struct instruction{
+        vector<int> args;
+        int address;
+        string name;
+    };
     typedef struct instruction instruction;
 
 //Еrror processing functions
     void error_processing(int code);
 
 //File parsing functions
-    int parse_file(FILE *in, char *name, int *args);
+    void parse_file(string& text, vector<instruction>& program);
 
     void text_parameters(string& in, int *maxPC, int *num_of_commands);
 
 //Writing program to memory
-    void memory_write(int memory[65536][16], instruction command);
+    void memory_write(vector<vector<int>>& memory, RISC::instruction step);
 
 //program execution
     void exec_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory);

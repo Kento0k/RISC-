@@ -1,13 +1,13 @@
-#include "RISCEmulatorLibrary.h"
-#include "instruction.c"
-void memory_write(int memory[4096][16], instruction step){
+#include "RiscEmulatorLibrary.h"
+using namespace std;
+void RISC::memory_write(vector<vector<int>>& memory, instruction step){
     //Переводим инструкции в машинный код и записываем в память
-    int address=step.adress;
+    int address=step.address;
     int memcnt;
     int neg=0;
     int carry=0;
     //ADD
-    if(strcmp(step.name, "add")==0){
+    if(step.name=="add"){
         //Проверяем правильность аргументов
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7||step.args[2]<0||step.args[2]>7)
             error_processing(100);
@@ -16,9 +16,9 @@ void memory_write(int memory[4096][16], instruction step){
         int regB= step.args[1];
         int regC= step.args[2];
         //Задаем код инструкции
-        memory[address][0]=0;
-        memory[address][1]=0;
-        memory[address][2]=0;
+        memory[address].push_back(0);
+        memory[address].push_back(0);
+        memory[address].push_back(0);
         //Записываем аргументы в двоичной системе счисления в соответствующие биты памяти
         memcnt=5;
         while(regA!=0){
@@ -34,7 +34,7 @@ void memory_write(int memory[4096][16], instruction step){
         }
         memcnt=9;
         for(int i=memcnt; i<4; i++)
-            memory[address][i] = 0;
+            memory[address].push_back(0);
         memcnt=15;
         while(regC!=0){
             memory[address][memcnt]=regC%2;
@@ -43,7 +43,7 @@ void memory_write(int memory[4096][16], instruction step){
         }
     }
         //ADDI
-    else if(strcmp(step.name, "addi")==0){
+    else if(step.name=="addi"){
         //Проверяем и записываем в биты памяти регистры в двоичной системе счисления
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7)
             error_processing(100);
@@ -52,9 +52,9 @@ void memory_write(int memory[4096][16], instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address][0]=0;
-        memory[address][1]=0;
-        memory[address][2]=1;
+        memory[address].push_back(0);
+        memory[address].push_back(0);
+        memory[address].push_back(1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -107,16 +107,16 @@ void memory_write(int memory[4096][16], instruction step){
         }
     }
         //NAND
-    else if(strcmp(step.name, "nand")==0){
+    else if(step.name=="nand"){
         //Проверяем аргументы, переводим в двоичную систему, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7||step.args[2]<0||step.args[2]>7)
             error_processing(100);
         int regA= step.args[0];
         int regB= step.args[1];
         int regC= step.args[2];
-        memory[address][0]=0;
-        memory[address][1]=1;
-        memory[address][2]=0;
+        memory[address].push_back(0);
+        memory[address].push_back(1);
+        memory[address].push_back(0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -140,7 +140,7 @@ void memory_write(int memory[4096][16], instruction step){
 
     }
         //LUI
-    else if(strcmp(step.name, "lui")==0){
+    else if(step.name=="lui"){
         //Проверяем аргументы, переводим в двоичную систему, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7)
             error_processing(100);
@@ -148,9 +148,9 @@ void memory_write(int memory[4096][16], instruction step){
             error_processing(110);
         int regA= step.args[0];
         int imm=step.args[1];
-        memory[address][0]=0;
-        memory[address][1]=1;
-        memory[address][2]=1;
+        memory[address].push_back(0);
+        memory[address].push_back(1);
+        memory[address].push_back(1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -165,7 +165,7 @@ void memory_write(int memory[4096][16], instruction step){
         }
     }
         //SW
-    else if(strcmp(step.name, "sw")==0){
+    else if(step.name=="sw"){
         //Проверяем аргументы, переводим в двоичную систему, при необходимости переводим immediate в дополнительный код, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7)
             error_processing(100);
@@ -174,9 +174,9 @@ void memory_write(int memory[4096][16], instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address][0]=1;
-        memory[address][1]=0;
-        memory[address][2]=0;
+        memory[address].push_back(1);
+        memory[address].push_back(0);
+        memory[address].push_back(0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -228,7 +228,7 @@ void memory_write(int memory[4096][16], instruction step){
 
     }
         //LW.
-    else if(strcmp(step.name, "lw")==0){
+    else if(step.name=="lw"){
         //Проверяем аргументы, переводим в двоичную систему, при необходимости переводим immediate в дополнительный код, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7)
             error_processing(100);
@@ -237,9 +237,9 @@ void memory_write(int memory[4096][16], instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address][0]=1;
-        memory[address][1]=0;
-        memory[address][2]=1;
+        memory[address].push_back(1);
+        memory[address].push_back(0);
+        memory[address].push_back(1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -290,7 +290,7 @@ void memory_write(int memory[4096][16], instruction step){
         }
     }
         //BEQ.
-    else if(strcmp(step.name, "beq")==0){
+    else if(step.name=="beq"){
         //Проверяем аргументы, переводим в двоичную систему, при необходимости переводим immediate в дополнительный код, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7)
             error_processing(100);
@@ -299,9 +299,9 @@ void memory_write(int memory[4096][16], instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address][0]=1;
-        memory[address][1]=1;
-        memory[address][2]=0;
+        memory[address].push_back(1);
+        memory[address].push_back(1);
+        memory[address].push_back(0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -352,15 +352,15 @@ void memory_write(int memory[4096][16], instruction step){
         }
     }
         //JALR.
-    else if(strcmp(step.name, "jalr")==0){
+    else if(step.name=="jalr"){
         //Проверяем аргументы, переводим в двоичную систему, записываем в соответствующие биты памяти
         if(step.args[0]<0||step.args[0]>7||step.args[1]<0||step.args[1]>7)
             error_processing(100);
         int regA= step.args[0];
         int regB= step.args[1];
-        memory[address][0]=1;
-        memory[address][1]=1;
-        memory[address][2]=1;
+        memory[address].push_back(1);
+        memory[address].push_back(1);
+        memory[address].push_back(1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;

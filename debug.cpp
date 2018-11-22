@@ -1,4 +1,4 @@
-#include"RISCEmulatorLibrary.h"
+#include"RiscEmulatorLibrary.h"
 #include"instruction.c"
 void debug_program(FILE *in, FILE *out, int reg[8][16], int memory[4096][16]){
     printf("Debug mode.\nPrint '1' to do the next step.\nPrint'2'to run to the end\nPrint'3'to stop running\n");

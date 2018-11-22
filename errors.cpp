@@ -1,4 +1,4 @@
-#include "RISCEmulatorLibrary.h"
+#include "RiscEmulatorLibrary.h"
 
 void RISC::error_processing(int code){
     printf("Error %d: ", code);

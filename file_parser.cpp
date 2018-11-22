@@ -1,107 +1,130 @@
 #include "RiscEmulatorLibrary.h"
-#include "instruction.h"
 using namespace std;
-//Убираем комментарии, проверяем на недопустимые символы, приводим буквы к нижнему регистру
-/*void clear_text(char *text, int length) {
-    char *allowed_symbols = ("abdehijlnqrstuw0123456789,-# ");
-    int k=0;
-    while(k<length) {
-        if (text[k] == '#') {
-            do {
-                text[k] = '#';
-                k++;
-            } while (text[k] != '\n' && k != length&&text[k]!=EOF);
-            continue;
+//Парсер
+void RISC:: parse_file(string& text, vector<instruction>& program) {
+    cmatch match;
+    string command;
+    string word;
+    instruction operation;
+    int operAddress=0;
+    regex add_comm("add [0-9]+ [0-9]+ [0-9]+ ?");
+    regex addi_comm("addi [0-9]+ [0-9]+ -?[0-9]+ ?");
+    regex nand_comm("nand [0-9]+ [0-9]+ [0-9]+ ?");
+    regex lui_comm("lui [0-9]+ [0-9]+ ?");
+    regex sw_comm("sw [0-9]+ [0-9]+ -?[0-9]+ ?");
+    regex lw_comm("lw [0-9]+ [0-9]+ -?[0-9]+ ?");
+    regex beq_comm("beq [0-9]+ [0-9]+ -?[0-9]+ ?");
+    regex jalr_comm("jalr [0-9]+ [0-9]+ ?");
+    cout<<text<<endl;
+    cout<<"parse"<<endl;
+    for(int i=0; i<text.length(); i++){
+        if(text[i]!='\n')
+            command+=text[i];
+        else{
+            if(regex_match(command.c_str(), match, add_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, addi_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, nand_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, lui_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<2; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, sw_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, lw_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, beq_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<3; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else if(regex_match(command.c_str(), match, jalr_comm)){
+                stringstream ss(command);
+                ss>>word;
+                operation.name=word;
+                for(int k=0; k<2; k++) {
+                    ss >> word;
+                    operation.args.push_back(stoi(word));
+                }
+            }
+            else {
+                cout<<command<<endl;
+                error_processing(70);
+            }
+            operation.address= operAddress;
+            program.push_back(operation);
+            operation.name.clear();
+            operation.args.clear();
+            command.clear();
+            operAddress++;
         }
-        if (text[k] == '\n'||text[k]==EOF) {
-            k++;
-            continue;
-        }
-        text[k] = (char)tolower(text[k]);
-        if (strchr(allowed_symbols, text[k]) == NULL)
-            error_processing(50);
-        k++;
     }
 }
-//Парсер
-int parse_file(FILE *in, char *name, int *args) {
-    const char *command[9];
-    command[0] = "addi";
-    command[1] = "nand";
-    command[2] = "jalr";
-    command[3] = "add";
-    command[4] = "lui";
-    command[5] = "beq";
-    command[6] = "sw";
-    command[7] = "lw" ;
-    command[8] = "halt" ;
-    int symbol=0, strlen=0, argcnt=0, flag=0;
-    char *str=(char*)malloc(0);
-    //Считываем строку из файла
-    while(symbol!='\n'&&symbol!=EOF&&symbol!='#'){
-        strlen++;
-        str= (char*)realloc(str, strlen*sizeof(char));
-        symbol=fgetc(in);
-        str[strlen-1]= (char)symbol;
-    }
-    clear_text(str, strlen);
-    while(symbol!='\n'&&symbol!=EOF)
-        symbol=fgetc(in);
-    if(strlen==1) {
-        return 0;
-    }
-    str[strlen-1]='\0';
-    //Получаем имя операции и проверяем строку на правильность
-    char *oper=strtok(str, " ,");
-    strcpy(name, oper);
-    for(int i=0; i<9; i++){
-        if (strcmp(name, command[i])==0)
-            flag=1;
-    }
-    if(flag==0)
-        error_processing(70);
-    //Получаем операнды и проверяем их
-    while(oper!=NULL){
-        oper=strtok(NULL, ",");
-        if(oper!=NULL) {
-            if(argcnt==3)
-                error_processing(70);
-            args[argcnt] = atoi(oper);
-            argcnt++;
-        }
-    }
-    if(strcmp(name, command[0])==0||strcmp(name, command[1])==0||strcmp(name, command[3])==0||strcmp(name, command[5])==0||strcmp(name, command[6])==0||strcmp(name, command[7])==0){
-        if(argcnt!=3)
-            error_processing(80);
-    }
-    if(strcmp(name, command[2])==0||strcmp(name, command[4])==0){
-        if(argcnt!=2)
-            error_processing(80);
-    }
-    if(strcmp(name, command[8])==0){
-        if(argcnt!=0)
-            error_processing(80);
-    }
-    free(str);
-    return 1;
-}*/
-//Количество строк и количество команд
+//Убираем комментарии, проверяем на недопустимые символы, приводим буквы к нижнему регистру
 void RISC::text_parameters(string& text, int *maxLine, int *num_of_commands) {
     string newText;
-    string allowed_symbols = ("abdehijlnqrstuw0123456789,-# ");
-    int newTextSize=0;
+    string allowed_symbols = ("abdehijlnqrstuw0123456789,-# \n");
     for (int i=0; i<text.length(); i++) {
-        if(allowed_symbols.find(text[i])==-1)
-            error_processing(50);
         if(isupper(text[i]))
-            tolower(text[i]);
+           text[i]= (char)tolower(text[i]);
+        if(allowed_symbols.find(text[i])==-1)
+           error_processing(50);
         if(text[i]=='#'){
            if(text[i+1]!='\n')
                text[i+1]='#';
         }
+        if(text[i]==',')
+            text[i]=' ';
+        if(text[i]=='\n' && text[i-1]=='\n')
+            continue;
         if(text[i]!='#'){
-            newText[newTextSize]= text[i];
-            newTextSize++;
+            newText+= text[i];
         }
     }
     text.clear();

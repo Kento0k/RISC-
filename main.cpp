@@ -1,11 +1,13 @@
-#include "RISCEmulatorLibrary.h"
+#include "RiscEmulatorLibrary.h"
 using namespace std;
 int main(int argc, char *argv[]){
     vector<vector<int>> reg(8, vector<int>(16));
     vector<vector<int>> memory(4096, vector<int>(16));
-    string inpName= string(argv[1]);
-    string outName= string(argv[2]);
-    string debug= string(argv[3]);
+    string inpName;
+    string outName;
+    string debug;
+    inpName= argv[1];
+    outName= argv[2];
     RISC processor;
     if(argc<3 || argc>4) {
         cout<<"############################################################\n"
@@ -38,7 +40,6 @@ int main(int argc, char *argv[]){
                 else
                     processor.error_processing(30);
             }*/
-        }
     }
     return 0;
 }

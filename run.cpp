@@ -1,5 +1,5 @@
-#include "RISCEmulatorLibrary.h"
-#include"instruction.c"
+#include "RiscEmulatorLibrary.h"
+#include"instruction.h"
 void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAcessAdress) {
     //Определяем операцию по коду
     //ADD. reg[a]= reg[b]+reg[c]
