@@ -1,11 +1,14 @@
 #include"RISCEmulatorLibrary.h"
-#include"instruction.c"
+#include"instruction.h"
 using namespace std;
-void RISC::exec_program(std::ifstream in, FILE *out, vector<vector<int>> reg(8, vector<int>(16)),  vector<vector<int>> memory(4096, vector<int>(16));){
+void RISC::exec_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory){
     //maxAcessAdress является максимальным адресом памяти, куда совершалось обращение. Используется для печати, начиная с адреса maxAcessAdress+1 ячейки памяти не выводятся, т.к. они не были использованы.
     int maxLine=0, num_of_commands=0, command_count=0, address=1, PC=1, maxPC=4096, maxAcessAdress=0;
-    text_parameters(in, &maxLine, &num_of_commands);
-    //Создаем массив команд
+    string text;
+    ifstream in(inpName);
+    getline(in, text, '\0');
+    text_parameters(text, &maxLine, &num_of_commands);
+    /*//Создаем массив команд
     instruction *program= (instruction*)malloc(num_of_commands * sizeof(instruction));
     int flag[num_of_commands];
     //Заполняем массив команд, присваиваем командам параметры, записываем программу в память
@@ -38,5 +41,5 @@ void RISC::exec_program(std::ifstream in, FILE *out, vector<vector<int>> reg(8, 
         for(int k=0; k<16; k++)
             fprintf(out, "%d", memory[i][k]);
         fprintf(out, "\n");
-    }
+    }*/
 }

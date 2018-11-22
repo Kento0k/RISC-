@@ -6,6 +6,7 @@
 #include<fstream>
 #include<vector>
 #include<string>
+using  namespace std;
 //instruction structure
 class RISC {
 public:
@@ -18,13 +19,13 @@ public:
 //File parsing functions
     int parse_file(FILE *in, char *name, int *args);
 
-    void text_parameters(std::ifstream in, int *maxPC, int *num_of_commands);
+    void text_parameters(string& in, int *maxPC, int *num_of_commands);
 
 //Writing program to memory
     void memory_write(int memory[65536][16], instruction command);
 
 //program execution
-    void exec_program(int argc, char *argv[], int reg[8][16], int memory[4096][16]);
+    void exec_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory);
 
 //program_debugging
     void debug_program(FILE *in, FILE *out, int reg[8][16], int memory[4096][16]);

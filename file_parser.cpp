@@ -1,7 +1,8 @@
-#include "RISCEmulatorLibrary.h"
-#include "instruction.c"
+#include "RiscEmulatorLibrary.h"
+#include "instruction.h"
+using namespace std;
 //Убираем комментарии, проверяем на недопустимые символы, приводим буквы к нижнему регистру
-void clear_text(char *text, int length) {
+/*void clear_text(char *text, int length) {
     char *allowed_symbols = ("abdehijlnqrstuw0123456789,-# ");
     int k=0;
     while(k<length) {
@@ -83,21 +84,26 @@ int parse_file(FILE *in, char *name, int *args) {
     }
     free(str);
     return 1;
-}
+}*/
 //Количество строк и количество команд
-void text_parameters(FILE* in, int *maxLine, int *num_of_commands){
-    int symbol;
-    while(!feof(in)){
-        if(fgetc(in)=='\n')
-            *maxLine+=1;
+void RISC::text_parameters(string& text, int *maxLine, int *num_of_commands) {
+    string newText;
+    string allowed_symbols = ("abdehijlnqrstuw0123456789,-# ");
+    int newTextSize=0;
+    for (int i=0; i<text.length(); i++) {
+        if(allowed_symbols.find(text[i])==-1)
+            error_processing(50);
+        if(isupper(text[i]))
+            tolower(text[i]);
+        if(text[i]=='#'){
+           if(text[i+1]!='\n')
+               text[i+1]='#';
+        }
+        if(text[i]!='#'){
+            newText[newTextSize]= text[i];
+            newTextSize++;
+        }
     }
-    fseek(in, 0, SEEK_SET);
-    for(int i=0; i<=*maxLine; i++){
-        symbol=fgetc(in);
-        if(symbol!='#' && symbol!=' ' &&symbol!='\n')
-            *num_of_commands+=1;
-        while(symbol!='\n' && symbol!=EOF)
-            symbol=fgetc(in);
-    }
-    fseek(in, 0, SEEK_SET);
+    text.clear();
+    text+=newText;
 }

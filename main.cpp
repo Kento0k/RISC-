@@ -29,21 +29,15 @@ int main(int argc, char *argv[]){
         processor.error_processing(10);
     }
     else{
-        ifstream in(inpName);
-        ofstream out(outName);
-        if(!in.is_open()){
-            processor.error_processing(20);
-        }
-        else{
             if(argc==3) {
-                processor.exec_program(argc, argv, reg, memory);
+                processor.exec_program(inpName, outName, reg, memory);
             }
-            else if(argc==4){
+            /*else if(argc==4){
                 if(debug=="[debug]")
-                    debug_program(in,out, reg, memory);
+                    processor.debug_program(in,out, reg, memory);
                 else
                     processor.error_processing(30);
-            }
+            }*/
         }
     }
     return 0;
