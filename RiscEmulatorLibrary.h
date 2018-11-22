@@ -24,7 +24,7 @@ public:
 //File parsing functions
     void parse_file(string& text, vector<instruction>& program);
 
-    void text_parameters(string& in, int *maxPC, int *num_of_commands);
+    void text_align(string& in);
 
 //Writing program to memory
     void memory_write(vector<vector<int>>& memory, RISC::instruction step);
@@ -33,9 +33,9 @@ public:
     void exec_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory);
 
 //program_debugging
-    void debug_program(FILE *in, FILE *out, int reg[8][16], int memory[4096][16]);
+    void debug_program(string& inpName, string& outName, vector<vector<int>>& reg,  vector<vector<int>>& memory);
 
 //operations
-    void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAcessAdress);
+    void run_instruction(vector<vector<int>>& reg, vector<vector<int>>& memory, int *PC, int *maxAcessAdress);
 };
 #endif //RISC_RISCEMULATORLIBRARY_H

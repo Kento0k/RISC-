@@ -1,50 +1,50 @@
 #include "RiscEmulatorLibrary.h"
-
+using namespace std;
 void RISC::error_processing(int code){
     printf("Error %d: ", code);
     if (code==10){
-        printf("Wrong number of arguments in command line\n");
+        cout<<"Wrong number of arguments in command line"<<endl;
     }
     else if (code==20){
-        printf("File doesn`t exist\n");
+        cout<<"File doesn`t exist"<<endl;
     }
     else if (code==30){
-        printf("Wrong command\n");
+        cout<<"Wrong command"<<endl;
     }
     else if (code==40){
-        printf("Cannot allocate memory\n");
+        cout<<"Cannot allocate memory"<<endl;
     }
     else if (code==50){
-        printf("Unacceptable symbol in line\n");
+        cout<<"Unacceptable symbol in line"<<endl;
     }
     else if (code==60){
-        printf("Line is too long\n");
+        cout<<"Line is too long"<<endl;
     }
     else if (code==70){
-        printf("Unacceptable command in line\n");
+        cout<<"Unacceptable command in line"<<endl;
     }
     else if (code==80){
-        printf("Unacceptable argument in line\n");
+        cout<<"Unacceptable argument in line\n"<<endl;
     }
     else if (code==90){
-        printf("Unacceptable number of arguments in line\n");
+        cout<<"Unacceptable number of arguments in line"<<endl;
     }
     else if (code==100){
-        printf("Unacceptable register\n");
+        cout<<"Unacceptable register"<<endl;
     }
     else if (code==110){
-        printf("Unacceptable immediate\n");
+        cout<<"Unacceptable immediate"<<endl;
     }
     else if (code==120){
-        printf("Out of bounds memory\n");
+        cout<<"Out of bounds memory"<<endl;
     }
     else if (code==130){
-        printf("Out of bounds adress\n");
+        cout<<"Out of bounds adress"<<endl;
     }
     else if (code==140){
-        printf("File is empty\n");
+        cout<<"File is empty"<<endl;
     }
-    printf("Press any button...\n");
+    cout<<"Press any button..."<<endl;
     getchar();
     exit(code);
 }

@@ -34,12 +34,13 @@ int main(int argc, char *argv[]){
             if(argc==3) {
                 processor.exec_program(inpName, outName, reg, memory);
             }
-            /*else if(argc==4){
+            else if(argc==4){
+                string debug= argv[3];
                 if(debug=="[debug]")
-                    processor.debug_program(in,out, reg, memory);
+                    processor.debug_program(inpName,outName, reg, memory);
                 else
                     processor.error_processing(30);
-            }*/
+            }
     }
     return 0;
 }

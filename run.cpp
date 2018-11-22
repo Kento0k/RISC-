@@ -1,6 +1,6 @@
 #include "RiscEmulatorLibrary.h"
-#include"instruction.h"
-void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAcessAdress) {
+using namespace std;
+void RISC::run_instruction(vector<vector<int>>& reg, vector<vector<int>>& memory, int *PC, int *maxAcessAdress) {
     //Определяем операцию по коду
     //ADD. reg[a]= reg[b]+reg[c]
     if (memory[*PC][0] == 0 && memory[*PC][1] == 0 && memory[*PC][2] == 0) {
@@ -27,7 +27,8 @@ void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAces
     }
         //ADDI. reg[a]=reg[b]+imm
     else if (memory[*PC][0] == 0 && memory[*PC][1] == 0 && memory[*PC][2] == 1) {
-        int regA, regB, carry = 0, imm[16] = {0};
+        int regA, regB, carry = 0;
+        vector<int> imm(16);
         //Переводим номера регистров в десятичную систему счисления
         regA = memory[*PC][3] * 4 + memory[*PC][4] * 2 + memory[*PC][5];
         regB = memory[*PC][6] * 4 + memory[*PC][7] * 2 + memory[*PC][8];
@@ -86,7 +87,8 @@ void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAces
     }
         //SW. store reg[a] in the memory with address= reg[b]+imm
     else if (memory[*PC][0] == 1 && memory[*PC][1] == 0 && memory[*PC][2] == 0) {
-        int regA, regB, carry = 0, imm[16] = {0}, address[16] = {0}, intAddress = 0, deg = 1;
+        int regA, regB, carry = 0, address[16] = {0}, intAddress = 0, deg = 1;
+        vector<int> imm(16);
         //Переводим номера регистров в десятичную систему счисления, получаем immediate
         regA = memory[*PC][3] * 4 + memory[*PC][4] * 2 + memory[*PC][5];
         regB = memory[*PC][6] * 4 + memory[*PC][7] * 2 + memory[*PC][8];
@@ -129,7 +131,8 @@ void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAces
         //LW. place to reg[a] a value from the memory with address= reg[b]+imm
     else if (memory[*PC][0] == 1 && memory[*PC][1] == 0 && memory[*PC][2] == 1) {
         //Переводим номера регистров в десятичную систему счисления, получаем immediate
-        int regA, regB, carry = 0, imm[16] = {0}, address[16] = {0}, intAddress = 0, deg = 1;
+        int regA, regB, carry = 0, address[16] = {0}, intAddress = 0, deg = 1;
+        vector<int> imm(16);
         regA = memory[*PC][3] * 4 + memory[*PC][4] * 2 + memory[*PC][5];
         regB = memory[*PC][6] * 4 + memory[*PC][7] * 2 + memory[*PC][8];
         //Если регистр А ненулевой,записываем в него значение, расположенное по полученному адресу, при условии его существования. При необходимости обновляем maxAccessAddress. Инкрементируем PC
@@ -166,7 +169,8 @@ void run_instruction(int reg[8][16], int memory[4096][16], int *PC, int *maxAces
     }
         //BEQ. if reg[a]==reg[b] go to memory address PC+1+imm. PC is the address of beq
     else if (memory[*PC][0] == 1 && memory[*PC][1] == 1 && memory[*PC][2] == 0) {
-        int regA, regB, carry = 0, imm[16] = {0}, address[16] = {0}, intAddress = *PC, deg = 1, cnt = 15, isEqual = 1;
+        int regA, regB, carry = 0, address[16] = {0}, intAddress = *PC, deg = 1, cnt = 15, isEqual = 1;
+        vector<int> imm(16);
         //Переводим номера регистров в десятичную систему счисления
         regA = memory[*PC][3] * 4 + memory[*PC][4] * 2 + memory[*PC][5];
         regB = memory[*PC][6] * 4 + memory[*PC][7] * 2 + memory[*PC][8];

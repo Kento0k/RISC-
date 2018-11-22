@@ -16,9 +16,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regB= step.args[1];
         int regC= step.args[2];
         //Задаем код инструкции
-        memory[address].push_back(0);
-        memory[address].push_back(0);
-        memory[address].push_back(0);
+        memory[address].insert(memory[address].begin(), 0);
+        memory[address].insert(memory[address].begin()+1, 0);
+        memory[address].insert(memory[address].begin()+2, 0);
         //Записываем аргументы в двоичной системе счисления в соответствующие биты памяти
         memcnt=5;
         while(regA!=0){
@@ -52,9 +52,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address].push_back(0);
-        memory[address].push_back(0);
-        memory[address].push_back(1);
+        memory[address].insert(memory[address].begin(), 0);
+        memory[address].insert(memory[address].begin()+1, 0);
+        memory[address].insert(memory[address].begin()+2, 1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -114,9 +114,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int regC= step.args[2];
-        memory[address].push_back(0);
-        memory[address].push_back(1);
-        memory[address].push_back(0);
+        memory[address].insert(memory[address].begin(), 0);
+        memory[address].insert(memory[address].begin()+1, 1);
+        memory[address].insert(memory[address].begin()+2, 0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -148,9 +148,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
             error_processing(110);
         int regA= step.args[0];
         int imm=step.args[1];
-        memory[address].push_back(0);
-        memory[address].push_back(1);
-        memory[address].push_back(1);
+        memory[address].insert(memory[address].begin(), 0);
+        memory[address].insert(memory[address].begin()+1, 1);
+        memory[address].insert(memory[address].begin()+2, 1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -174,9 +174,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address].push_back(1);
-        memory[address].push_back(0);
-        memory[address].push_back(0);
+        memory[address].insert(memory[address].begin(), 1);
+        memory[address].insert(memory[address].begin()+1, 0);
+        memory[address].insert(memory[address].begin()+2, 0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -237,9 +237,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address].push_back(1);
-        memory[address].push_back(0);
-        memory[address].push_back(1);
+        memory[address].insert(memory[address].begin(), 1);
+        memory[address].insert(memory[address].begin()+1, 0);
+        memory[address].insert(memory[address].begin()+2, 1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -299,9 +299,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
         int regA= step.args[0];
         int regB= step.args[1];
         int imm= step.args[2];
-        memory[address].push_back(1);
-        memory[address].push_back(1);
-        memory[address].push_back(0);
+        memory[address].insert(memory[address].begin(), 1);
+        memory[address].insert(memory[address].begin()+1, 1);
+        memory[address].insert(memory[address].begin()+2, 0);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -358,9 +358,9 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
             error_processing(100);
         int regA= step.args[0];
         int regB= step.args[1];
-        memory[address].push_back(1);
-        memory[address].push_back(1);
-        memory[address].push_back(1);
+        memory[address].insert(memory[address].begin(), 1);
+        memory[address].insert(memory[address].begin()+1, 1);
+        memory[address].insert(memory[address].begin()+2, 1);
         memcnt=5;
         while(regA!=0){
             memory[address][memcnt]=regA%2;
@@ -374,7 +374,6 @@ void RISC::memory_write(vector<vector<int>>& memory, instruction step){
             memcnt--;
         }
     }
-
 }
 
 

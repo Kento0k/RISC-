@@ -1,12 +1,13 @@
 #include "RiscEmulatorLibrary.h"
 using namespace std;
 //Парсер
+//Проверяем входную программу на правильность. Заполняем вектор команд
 void RISC:: parse_file(string& text, vector<instruction>& program) {
     cmatch match;
     string command;
     string word;
     instruction operation;
-    int operAddress=0;
+    int operAddress=1;
     regex add_comm("add [0-9]+ [0-9]+ [0-9]+ ?");
     regex addi_comm("addi [0-9]+ [0-9]+ -?[0-9]+ ?");
     regex nand_comm("nand [0-9]+ [0-9]+ [0-9]+ ?");
@@ -15,8 +16,6 @@ void RISC:: parse_file(string& text, vector<instruction>& program) {
     regex lw_comm("lw [0-9]+ [0-9]+ -?[0-9]+ ?");
     regex beq_comm("beq [0-9]+ [0-9]+ -?[0-9]+ ?");
     regex jalr_comm("jalr [0-9]+ [0-9]+ ?");
-    cout<<text<<endl;
-    cout<<"parse"<<endl;
     for(int i=0; i<text.length(); i++){
         if(text[i]!='\n')
             command+=text[i];
@@ -107,7 +106,7 @@ void RISC:: parse_file(string& text, vector<instruction>& program) {
     }
 }
 //Убираем комментарии, проверяем на недопустимые символы, приводим буквы к нижнему регистру
-void RISC::text_parameters(string& text, int *maxLine, int *num_of_commands) {
+void RISC::text_align(string& text) {
     string newText;
     string allowed_symbols = ("abdehijlnqrstuw0123456789,-# \n");
     for (int i=0; i<text.length(); i++) {
