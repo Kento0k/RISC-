@@ -1,6 +1,7 @@
 #include"RISCEmulatorLibrary.h"
 #include"instruction.c"
-void RISC::exec_program(std::ifstream in, FILE *out, int reg[8][16], int memory[4096][16]){
+using namespace std;
+void RISC::exec_program(std::ifstream in, FILE *out, vector<vector<int>> reg(8, vector<int>(16)),  vector<vector<int>> memory(4096, vector<int>(16));){
     //maxAcessAdress является максимальным адресом памяти, куда совершалось обращение. Используется для печати, начиная с адреса maxAcessAdress+1 ячейки памяти не выводятся, т.к. они не были использованы.
     int maxLine=0, num_of_commands=0, command_count=0, address=1, PC=1, maxPC=4096, maxAcessAdress=0;
     text_parameters(in, &maxLine, &num_of_commands);
