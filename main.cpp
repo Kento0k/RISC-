@@ -4,7 +4,7 @@ int main(int argc, char *argv[]){
     vector<vector<int>> reg(8, vector<int>(16));
     vector<vector<int>> memory(4096, vector<int>(16));
     string inpName= string(argv[1]);
-    string outpName= string(argv[2]);
+    string outName= string(argv[2]);
     string debug= string(argv[3]);
     RISC processor;
     if(argc<3 || argc>4) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     }
     else{
         ifstream in(inpName);
-        ofstream out(outpName);
+        ofstream out(outName);
         if(!in.is_open()){
             processor.error_processing(20);
         }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
                 processor.exec_program(argc, argv, reg, memory);
             }
             else if(argc==4){
-                if()
+                if(debug=="[debug]")
                     debug_program(in,out, reg, memory);
                 else
                     processor.error_processing(30);
